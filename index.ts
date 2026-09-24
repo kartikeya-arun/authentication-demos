@@ -44,7 +44,7 @@ initializePassport(passport, (username: string) =>
   users.find((user) => user.username === username),
 );
 
-const checkAuthenticated = (req, res, next) => {
+const checkAuthenticated = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return next();
   }
