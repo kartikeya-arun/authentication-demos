@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 interface FORM_DATA {
@@ -31,13 +31,26 @@ export default function Login() {
         },
         body: JSON.stringify(formData),
       });
-      const msg = await res.json();
-      if (msg.message === "success") navigate("/");
-      else alert(msg.message);
+      const data = await res.json();
+      res.status === 200 &&
+        (await localStorage.setItem("access-token", data.accessToken)) &&
+        navigate("/");
     } catch (err) {
       console.log(err);
     }
   };
+
+  const isAuthenticated = async () => {
+    const accessToken = await localStorage.getItem("access-token");
+    if (!accessToken) {
+      navigate("/login");
+    }
+  };
+
+  useEffect(() => {
+    isAuthenticated();
+  }, []);
+
   return (
     <>
       <h1>Log In</h1>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { data, Link, useNavigate } from "react-router";
 
 interface FORM_DATA {
   username: string;
@@ -29,7 +29,12 @@ export default function SignUp() {
         },
         body: JSON.stringify(formData),
       });
-      res.status === 200 && navigate("/");
+      const data = await res.json();
+      console.log(data);
+      const accessToken = data.accessToken;
+      console.log(accessToken);
+      accessToken && (await localStorage.setItem("access-token", accessToken));
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

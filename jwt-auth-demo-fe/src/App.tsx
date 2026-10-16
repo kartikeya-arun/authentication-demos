@@ -11,9 +11,16 @@ function App() {
   const navigate = useNavigate();
 
   const getPosts = async () => {
+    const accessToken = await localStorage.getItem("access-token");
+    console.log(accessToken);
     try {
       const res = await fetch("http://localhost:3001/posts", {
         credentials: "include",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
       });
       const data = await res.json();
       if (res.status !== 200) {
